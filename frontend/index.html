@@ -1,0 +1,2646 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#080B14">
+  <title>VERITY · Brand Integrity & Governance OS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      --bg-deep: #080B14;
+      --bg-surface: #0D1220;
+      --bg-elevated: #131A2E;
+      --glass-bg: rgba(13, 18, 32, 0.72);
+      --glass-elevated: rgba(19, 26, 46, 0.75);
+      --glass-border: rgba(255, 255, 255, 0.08);
+      --glass-border-hover: rgba(67, 230, 210, 0.35);
+      --glass-highlight: inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+      
+      --teal: #43E6D2;
+      --teal-glow: rgba(67, 230, 210, 0.25);
+      --teal-subtle: rgba(67, 230, 210, 0.12);
+      --teal-border: rgba(67, 230, 210, 0.25);
+      
+      --violet: #8B7CFF;
+      --violet-glow: rgba(139, 124, 255, 0.25);
+      --violet-subtle: rgba(139, 124, 255, 0.12);
+      
+      --text-main: #F4F7FC;
+      --text-muted: #98A4B8;
+      --text-dim: #64748B;
+      
+      --coral-red: #F43F5E;
+      --coral-subtle: rgba(244, 63, 94, 0.14);
+      --coral-border: rgba(244, 63, 94, 0.3);
+      
+      --amber-warn: #F59E0B;
+      --amber-subtle: rgba(245, 158, 11, 0.14);
+      --amber-border: rgba(245, 158, 11, 0.3);
+      
+      --emerald-good: #2DD4BF;
+      --emerald-subtle: rgba(45, 212, 191, 0.14);
+      --emerald-border: rgba(45, 212, 191, 0.3);
+      
+      --blue-low: #38BDF8;
+      --blue-subtle: rgba(56, 189, 248, 0.14);
+      --blue-border: rgba(56, 189, 248, 0.3);
+
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 18px;
+      --radius-xl: 24px;
+      
+      --shadow-subtle: 0 4px 20px -2px rgba(0, 0, 0, 0.4);
+      --shadow-glass: 0 16px 36px -4px rgba(0, 0, 0, 0.5), inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
+      --transition-fast: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+      --transition-smooth: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * { box-sizing: border-box; }
+    [hidden] { display: none !important; }
+
+    body {
+      margin: 0;
+      background-color: var(--bg-deep);
+      background-image: 
+        radial-gradient(circle at 18% 12%, rgba(67, 230, 210, 0.07) 0%, transparent 40%),
+        radial-gradient(circle at 82% 22%, rgba(139, 124, 255, 0.09) 0%, transparent 45%),
+        radial-gradient(circle at 50% 90%, rgba(67, 230, 210, 0.04) 0%, transparent 50%),
+        linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 100% 100%, 48px 48px, 48px 48px;
+      color: var(--text-main);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+    }
+
+    /* Scrollbars */
+    ::-webkit-scrollbar { width: 7px; height: 7px; }
+    ::-webkit-scrollbar-track { background: rgba(8, 11, 20, 0.5); }
+    ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.14); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(67, 230, 210, 0.4); }
+
+    /* Interactive Elements & Typography */
+    button, input, textarea, select {
+      font-family: inherit;
+      color: inherit;
+    }
+    button { cursor: pointer; border: 0; background: none; }
+    button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible {
+      outline: 2px solid var(--teal);
+      outline-offset: 3px;
+    }
+    button:disabled { opacity: 0.55; cursor: not-allowed; }
+
+    .shell {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* Sidebar */
+    .side {
+      width: 260px;
+      position: fixed;
+      inset: 0 auto 0 0;
+      padding: 24px 16px;
+      background: rgba(9, 13, 23, 0.82);
+      border-right: 1px solid var(--glass-border);
+      display: flex;
+      flex-direction: column;
+      z-index: 20;
+      backdrop-filter: blur(24px) saturate(190%);
+      box-shadow: 4px 0 24px rgba(0, 0, 0, 0.35);
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0 8px 24px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      margin-bottom: 20px;
+    }
+    .logo-mark {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-md);
+      background: linear-gradient(135deg, rgba(67, 230, 210, 0.22), rgba(139, 124, 255, 0.22));
+      border: 1px solid rgba(67, 230, 210, 0.4);
+      display: grid;
+      place-items: center;
+      box-shadow: 0 0 20px rgba(67, 230, 210, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      color: var(--teal);
+      flex-shrink: 0;
+    }
+    .logo-text b {
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      background: linear-gradient(90deg, #FFFFFF, #B9FFF5);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .logo-text small {
+      display: block;
+      font: 9px/1 'DM Mono', monospace;
+      letter-spacing: 0.08em;
+      color: var(--text-dim);
+      margin-top: 5px;
+    }
+
+    .label {
+      font: 9px/1 'DM Mono', monospace;
+      letter-spacing: 0.16em;
+      color: var(--text-dim);
+      padding: 0 10px 10px;
+      text-transform: uppercase;
+    }
+
+    .workspace-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-md);
+      padding: 10px 12px;
+      background: rgba(255, 255, 255, 0.025);
+      color: var(--text-main);
+      width: 100%;
+      text-align: left;
+      margin-bottom: 24px;
+      transition: var(--transition-fast);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+    }
+    .workspace-btn:hover {
+      background: rgba(67, 230, 210, 0.05);
+      border-color: var(--teal-border);
+    }
+    .ws-mark {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, rgba(67, 230, 210, 0.2), rgba(139, 124, 255, 0.2));
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: var(--teal);
+      font-weight: 700;
+      font-size: 12px;
+      flex-shrink: 0;
+    }
+    .workspace-btn div {
+      display: grid;
+      gap: 3px;
+      flex: 1;
+      min-width: 0;
+    }
+    .workspace-btn b {
+      font-size: 11px;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .workspace-btn small {
+      font-size: 9px;
+      color: var(--text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Navigation */
+    .nav {
+      display: grid;
+      gap: 5px;
+    }
+    .nav button {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border: 1px solid transparent;
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      background: transparent;
+      color: var(--text-muted);
+      width: 100%;
+      text-align: left;
+      font-size: 12px;
+      font-weight: 500;
+      transition: var(--transition-fast);
+    }
+    .nav button svg {
+      width: 16px;
+      height: 16px;
+      stroke-width: 1.8;
+      stroke: currentColor;
+      fill: none;
+      transition: var(--transition-fast);
+    }
+    .nav button:hover {
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text-main);
+      border-color: rgba(255, 255, 255, 0.05);
+    }
+    .nav button.active {
+      background: linear-gradient(90deg, rgba(67, 230, 210, 0.12), rgba(139, 124, 255, 0.06));
+      border-color: rgba(67, 230, 210, 0.3);
+      color: #FFFFFF;
+      box-shadow: 0 0 16px rgba(67, 230, 210, 0.12);
+    }
+    .nav button.active svg {
+      stroke: var(--teal);
+      filter: drop-shadow(0 0 6px var(--teal-glow));
+    }
+    .nav-tag {
+      margin-left: auto;
+      font: 8px/1 'DM Mono', monospace;
+      padding: 3px 6px;
+      border-radius: 4px;
+      background: rgba(67, 230, 210, 0.15);
+      border: 1px solid rgba(67, 230, 210, 0.3);
+      color: var(--teal);
+    }
+
+    .sidebar-footer {
+      margin-top: auto;
+      padding: 14px;
+      border-radius: var(--radius-md);
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--glass-border);
+      font-size: 10px;
+    }
+    .sidebar-footer-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font: 9px 'DM Mono', monospace;
+      color: var(--teal);
+      letter-spacing: 0.05em;
+    }
+    .sidebar-footer-badge i {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--teal);
+      box-shadow: 0 0 8px var(--teal);
+    }
+    .sidebar-footer p {
+      margin: 6px 0 0 0;
+      color: var(--text-dim);
+      font-size: 10px;
+      line-height: 1.5;
+    }
+
+    /* Main Area */
+    .main {
+      margin-left: 260px;
+      width: calc(100% - 260px);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top Bar */
+    header {
+      height: 64px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 36px;
+      border-bottom: 1px solid var(--glass-border);
+      position: sticky;
+      top: 0;
+      background: rgba(8, 11, 20, 0.82);
+      backdrop-filter: blur(20px);
+      z-index: 15;
+    }
+    .crumb-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      color: var(--text-dim);
+    }
+    .crumb-bar b {
+      color: var(--text-main);
+      font-weight: 600;
+    }
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .engine-status-pill {
+      font: 9px/1 'DM Mono', monospace;
+      letter-spacing: 0.08em;
+      padding: 6px 12px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      border: 1px solid var(--emerald-border);
+      background: var(--emerald-subtle);
+      color: var(--emerald-good);
+    }
+    .engine-status-pill.offline {
+      border-color: var(--coral-border);
+      background: var(--coral-subtle);
+      color: var(--coral-red);
+    }
+    .engine-status-pill i {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+      box-shadow: 0 0 8px currentColor;
+    }
+
+    /* Content Canvas */
+    .content {
+      max-width: 1440px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 32px 36px 64px;
+      flex: 1;
+    }
+
+    /* Error Banner */
+    .error-banner {
+      padding: 14px 18px;
+      margin-bottom: 24px;
+      border: 1px solid var(--coral-border);
+      background: rgba(244, 63, 94, 0.08);
+      backdrop-filter: blur(16px);
+      color: #FFA4B4;
+      border-radius: var(--radius-md);
+      font-size: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 8px 24px rgba(244, 63, 94, 0.12);
+    }
+    .error-banner button {
+      background: rgba(255, 255, 255, 0.1);
+      border: 0;
+      color: #FFFFFF;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      font-weight: 600;
+      border: 1px solid transparent;
+      transition: var(--transition-fast);
+      white-space: nowrap;
+      text-decoration: none;
+    }
+    .btn svg {
+      width: 15px;
+      height: 15px;
+      stroke-width: 2;
+      stroke: currentColor;
+      fill: none;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #43E6D2, #2CC4B1);
+      color: #080B14;
+      border-color: rgba(67, 230, 210, 0.5);
+      box-shadow: 0 2px 14px var(--teal-glow);
+    }
+    .btn-primary:hover:not(:disabled) {
+      background: linear-gradient(135deg, #59edea, #35d4c1);
+      box-shadow: 0 4px 22px rgba(67, 230, 210, 0.45);
+      transform: translateY(-1px);
+    }
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.04);
+      border-color: var(--glass-border);
+      color: var(--text-main);
+      backdrop-filter: blur(12px);
+    }
+    .btn-secondary:hover:not(:disabled) {
+      background: rgba(255, 255, 255, 0.09);
+      border-color: rgba(255, 255, 255, 0.18);
+      transform: translateY(-1px);
+    }
+    .btn-success {
+      background: var(--emerald-subtle);
+      border-color: var(--emerald-border);
+      color: var(--emerald-good);
+    }
+    .btn-success:hover:not(:disabled) {
+      background: rgba(45, 212, 191, 0.22);
+      border-color: var(--emerald-good);
+      transform: translateY(-1px);
+    }
+    .btn-danger {
+      background: var(--coral-subtle);
+      border-color: var(--coral-border);
+      color: var(--coral-red);
+    }
+    .btn-danger:hover:not(:disabled) {
+      background: rgba(244, 63, 94, 0.22);
+      border-color: var(--coral-red);
+      transform: translateY(-1px);
+    }
+    .btn-violet {
+      background: var(--violet-subtle);
+      border-color: rgba(139, 124, 255, 0.35);
+      color: #C7BFFF;
+    }
+    .btn-violet:hover:not(:disabled) {
+      background: rgba(139, 124, 255, 0.22);
+      transform: translateY(-1px);
+    }
+
+    /* Glass Panels */
+    .glass-card {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-lg);
+      backdrop-filter: blur(20px) saturate(180%);
+      box-shadow: var(--shadow-glass);
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .glass-card-glow {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 200px;
+      height: 200px;
+      background: radial-gradient(circle at top right, rgba(67, 230, 210, 0.08), transparent 70%);
+      pointer-events: none;
+    }
+
+    /* Hero Section */
+    .hero-card {
+      position: relative;
+      background: linear-gradient(135deg, rgba(13, 18, 32, 0.85), rgba(19, 26, 46, 0.8));
+      border: 1px solid rgba(67, 230, 210, 0.2);
+      border-radius: var(--radius-xl);
+      padding: 40px;
+      overflow: hidden;
+      margin-bottom: 28px;
+      box-shadow: 0 20px 48px -12px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+    .hero-mesh {
+      position: absolute;
+      inset: 0;
+      background: 
+        radial-gradient(circle at 85% 30%, rgba(139, 124, 255, 0.15) 0%, transparent 40%),
+        radial-gradient(circle at 75% 70%, rgba(67, 230, 210, 0.12) 0%, transparent 40%);
+      pointer-events: none;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 5px 12px;
+      border-radius: 20px;
+      background: rgba(67, 230, 210, 0.1);
+      border: 1px solid rgba(67, 230, 210, 0.25);
+      color: var(--teal);
+      font: 10px 'DM Mono', monospace;
+      letter-spacing: 0.1em;
+      margin-bottom: 16px;
+    }
+    .hero-title {
+      font-size: clamp(28px, 3.2vw, 42px);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1.15;
+      margin: 0 0 14px;
+    }
+    .hero-title span {
+      background: linear-gradient(90deg, #FFFFFF 0%, #A5F3FC 50%, #C4B5FD 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-desc {
+      font-size: 13px;
+      line-height: 1.7;
+      color: var(--text-muted);
+      max-width: 580px;
+      margin: 0 0 28px;
+    }
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    /* Metrics Grid */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    .metric-card {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      backdrop-filter: blur(18px);
+      box-shadow: var(--shadow-subtle);
+      transition: var(--transition-smooth);
+      position: relative;
+      overflow: hidden;
+    }
+    .metric-card:hover {
+      border-color: rgba(255, 255, 255, 0.16);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px -4px rgba(0, 0, 0, 0.45);
+    }
+    .metric-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+    .metric-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: var(--radius-sm);
+      display: grid;
+      place-items: center;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--teal);
+    }
+    .metric-icon svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.8; }
+    .metric-icon.violet { color: var(--violet); background: var(--violet-subtle); border-color: rgba(139, 124, 255, 0.2); }
+    .metric-icon.amber { color: var(--amber-warn); background: var(--amber-subtle); border-color: var(--amber-border); }
+    .metric-icon.emerald { color: var(--emerald-good); background: var(--emerald-subtle); border-color: var(--emerald-border); }
+    .metric-icon.coral { color: var(--coral-red); background: var(--coral-subtle); border-color: var(--coral-border); }
+    .metric-label {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+    .metric-val {
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      margin: 4px 0 8px;
+    }
+    .metric-sub {
+      font-size: 10px;
+      color: var(--text-dim);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Layout Splits */
+    .cols-split {
+      display: grid;
+      grid-template-columns: 1.35fr 1fr;
+      gap: 20px;
+    }
+    .cols-half {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    /* Panel Headers */
+    .panel-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 18px;
+      gap: 12px;
+    }
+    .panel-head h3 {
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin: 0;
+      color: #FFFFFF;
+    }
+    .panel-head p {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin: 4px 0 0 0;
+    }
+
+    /* Status Pills */
+    .pill {
+      font: 9px/1 'DM Mono', monospace;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 5px 9px;
+      border-radius: 6px;
+      border: 1px solid var(--glass-border);
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-muted);
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .pill.good {
+      color: var(--emerald-good);
+      background: var(--emerald-subtle);
+      border-color: var(--emerald-border);
+    }
+    .pill.warn {
+      color: var(--amber-warn);
+      background: var(--amber-subtle);
+      border-color: var(--amber-border);
+    }
+    .pill.danger {
+      color: var(--coral-red);
+      background: var(--coral-subtle);
+      border-color: var(--coral-border);
+    }
+    .pill.ready {
+      color: var(--teal);
+      background: var(--teal-subtle);
+      border-color: var(--teal-border);
+    }
+
+    /* Severity Badges */
+    .badge-severity {
+      font: 9px 'DM Mono', monospace;
+      padding: 3px 7px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+    }
+    .badge-severity.critical, .badge-severity.high {
+      background: var(--coral-subtle);
+      color: var(--coral-red);
+      border: 1px solid var(--coral-border);
+    }
+    .badge-severity.medium {
+      background: var(--amber-subtle);
+      color: var(--amber-warn);
+      border: 1px solid var(--amber-border);
+    }
+    .badge-severity.low {
+      background: var(--blue-subtle);
+      color: var(--blue-low);
+      border: 1px solid var(--blue-border);
+    }
+
+    /* List Rows */
+    .list-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      width: 100%;
+      padding: 13px 14px;
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(255, 255, 255, 0.03);
+      background: rgba(255, 255, 255, 0.015);
+      color: var(--text-main);
+      text-align: left;
+      margin-bottom: 8px;
+      transition: var(--transition-fast);
+    }
+    .list-row:hover {
+      background: rgba(67, 230, 210, 0.04);
+      border-color: rgba(67, 230, 210, 0.2);
+      transform: translateX(2px);
+    }
+    .list-row-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      display: grid;
+      place-items: center;
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--text-dim);
+      font-size: 13px;
+    }
+    .list-row-content {
+      display: grid;
+      gap: 3px;
+      flex: 1;
+      min-width: 0;
+    }
+    .list-row-content b {
+      font-size: 12px;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .list-row-content small {
+      font-size: 10px;
+      color: var(--text-dim);
+    }
+
+    /* Form Fields */
+    .form-group {
+      display: grid;
+      gap: 7px;
+      margin-bottom: 16px;
+    }
+    .form-group label {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+    }
+    .form-group input, .form-group textarea, .form-group select {
+      width: 100%;
+      background: rgba(8, 11, 20, 0.7);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-sm);
+      padding: 11px 13px;
+      color: var(--text-main);
+      font-size: 12px;
+      transition: var(--transition-fast);
+    }
+    .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+      border-color: var(--teal);
+      box-shadow: 0 0 16px rgba(67, 230, 210, 0.15);
+      background: rgba(8, 11, 20, 0.95);
+    }
+    .form-group textarea {
+      min-height: 140px;
+      resize: vertical;
+      line-height: 1.7;
+    }
+    .char-counter {
+      font: 9px/1 'DM Mono', monospace;
+      color: var(--text-dim);
+    }
+
+    /* Findings Cards */
+    .finding-card {
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      background: rgba(255, 255, 255, 0.02);
+      margin-bottom: 14px;
+      transition: var(--transition-smooth);
+      position: relative;
+    }
+    .finding-card:hover {
+      border-color: rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.035);
+    }
+    .finding-card.severity-critical, .finding-card.severity-high {
+      border-left: 3px solid var(--coral-red);
+    }
+    .finding-card.severity-medium {
+      border-left: 3px solid var(--amber-warn);
+    }
+    .finding-card.severity-low {
+      border-left: 3px solid var(--blue-low);
+    }
+    .finding-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+    .finding-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #FFFFFF;
+      margin: 0 0 6px;
+    }
+    .finding-desc {
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin: 0 0 10px;
+    }
+    .matched-quote {
+      font-size: 12px;
+      padding: 10px 14px;
+      border-left: 2px solid var(--teal);
+      background: rgba(67, 230, 210, 0.06);
+      margin: 10px 0;
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      color: #D6FFF9;
+      font-family: 'DM Mono', monospace;
+    }
+    .evidence-meta {
+      font-size: 10px;
+      color: var(--text-dim);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+    .suggestion-box {
+      padding: 12px 14px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--emerald-border);
+      background: var(--emerald-subtle);
+      margin: 10px 0;
+    }
+    .suggestion-box.ungrounded {
+      border-color: var(--amber-border);
+      background: var(--amber-subtle);
+    }
+    .suggestion-box small {
+      font: 9px 'DM Mono', monospace;
+      color: var(--emerald-good);
+      display: block;
+      margin-bottom: 4px;
+      letter-spacing: 0.08em;
+    }
+    .suggestion-box.ungrounded small {
+      color: var(--amber-warn);
+    }
+    .suggestion-box p {
+      font-size: 11px;
+      color: var(--text-main);
+      margin: 0;
+      line-height: 1.5;
+    }
+    .decision-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      flex-wrap: wrap;
+    }
+
+    /* Modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(6, 9, 18, 0.88);
+      backdrop-filter: blur(24px);
+      z-index: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .modal-card {
+      background: #0C101E;
+      border: 1px solid rgba(67, 230, 210, 0.3);
+      border-radius: var(--radius-xl);
+      max-width: 980px;
+      width: 100%;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.8), 0 0 32px rgba(67, 230, 210, 0.15);
+      position: relative;
+      overflow: hidden;
+    }
+    .modal-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 22px 28px;
+      border-bottom: 1px solid var(--glass-border);
+      background: rgba(255, 255, 255, 0.015);
+    }
+    .modal-body {
+      padding: 28px;
+      overflow-y: auto;
+      flex: 1;
+    }
+    .modal-foot {
+      padding: 18px 28px;
+      border-top: 1px solid var(--glass-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #090D18;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #0F172A;
+      border: 1px solid var(--teal-border);
+      border-radius: var(--radius-md);
+      padding: 14px 20px;
+      font-size: 12px;
+      color: #E2E8F0;
+      z-index: 1000;
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.6), 0 0 20px rgba(67, 230, 210, 0.2);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes slideUp {
+      from { transform: translateY(16px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 44px 20px;
+      color: var(--text-muted);
+    }
+    .empty-icon {
+      width: 44px;
+      height: 44px;
+      margin: 0 auto 12px;
+      border-radius: var(--radius-md);
+      display: grid;
+      place-items: center;
+      background: rgba(67, 230, 210, 0.08);
+      border: 1px solid rgba(67, 230, 210, 0.2);
+      color: var(--teal);
+    }
+    .empty-state h3 {
+      font-size: 13px;
+      font-weight: 700;
+      color: #FFFFFF;
+      margin: 0 0 6px;
+    }
+    .empty-state p {
+      font-size: 11px;
+      line-height: 1.6;
+      max-width: 360px;
+      margin: 0 auto 16px;
+      color: var(--text-dim);
+    }
+
+    /* Onboarding Card */
+    .onboarding-banner {
+      background: linear-gradient(135deg, rgba(67, 230, 210, 0.08), rgba(139, 124, 255, 0.06));
+      border: 1px solid rgba(67, 230, 210, 0.25);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      margin-bottom: 28px;
+    }
+    .steps-trio {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 16px;
+    }
+    .step-unit {
+      background: rgba(8, 11, 20, 0.6);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .step-unit b { font-size: 12px; color: #FFFFFF; }
+    .step-unit p { font-size: 10px; color: var(--text-muted); margin: 0; line-height: 1.5; flex: 1; }
+
+    /* Filter Bar */
+    .filter-bar {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .filter-btn {
+      padding: 6px 12px;
+      border-radius: 20px;
+      border: 1px solid var(--glass-border);
+      background: rgba(255, 255, 255, 0.02);
+      color: var(--text-muted);
+      font-size: 11px;
+      transition: var(--transition-fast);
+    }
+    .filter-btn:hover {
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text-main);
+    }
+    .filter-btn.active {
+      background: var(--teal-subtle);
+      border-color: var(--teal);
+      color: var(--teal);
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+      .cols-split, .cols-half { grid-template-columns: 1fr; }
+      .steps-trio { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 768px) {
+      .side { position: relative; width: 100%; height: auto; padding: 14px; }
+      .main { margin: 0; width: 100%; }
+      .shell { flex-direction: column; }
+      .content { padding: 16px; }
+      header { padding: 0 16px; }
+    }
+    .report-meta-timestamp { display: none; }
+
+    /* ==========================================================================
+       DEDICATED COMPLIANCE REPORT PRINT SYSTEM
+       Optimized for crisp, professional executive PDF and paper output.
+       ========================================================================== */
+    @media print {
+      @page {
+        size: letter portrait;
+        margin: 10mm 14mm 10mm 14mm;
+      }
+
+      /* 1. Global Document Reset */
+      html, body {
+        background: #FFFFFF !important;
+        background-image: none !important;
+        color: #0F172A !important;
+        font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
+        font-size: 9pt !important;
+        line-height: 1.4 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+
+      /* 2. Hide all non-report application chrome and interactive controls */
+      .shell,
+      .side,
+      header,
+      .crumb-bar,
+      .header-actions,
+      .nav,
+      .toast,
+      .error-banner,
+      #error-container,
+      .decision-actions,
+      .filter-bar,
+      .no-print,
+      button,
+      .btn,
+      .modal-head button,
+      .modal-foot,
+      #report-modal[hidden] {
+        display: none !important;
+      }
+
+      /* Isolate report modal when open */
+      body.report-open .shell,
+      body:has(#report-modal:not([hidden])) .shell {
+        display: none !important;
+      }
+
+      /* 3. Report Modal Container */
+      #report-modal,
+      #report-modal:not([hidden]) {
+        position: static !important;
+        display: block !important;
+        inset: auto !important;
+        width: 100% !important;
+        height: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: transparent !important;
+        backdrop-filter: none !important;
+        box-shadow: none !important;
+        overflow: visible !important;
+        z-index: auto !important;
+      }
+
+      /* 4. Modal Card: Clean full-width document sheet */
+      .modal-card {
+        background: #FFFFFF !important;
+        color: #0F172A !important;
+        border: none !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        max-width: 100% !important;
+        width: 100% !important;
+        max-height: none !important;
+        height: auto !important;
+        overflow: visible !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        display: block !important;
+      }
+
+      /* 5. Header: Executive Banner with Integrated Timestamp */
+      .modal-head,
+      .report-header {
+        background: #F8FAFC !important;
+        border: 1px solid #CBD5E1 !important;
+        border-radius: 8px !important;
+        padding: 10px 14px !important;
+        margin-bottom: 10px !important;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+      }
+      .report-badge {
+        font-family: 'DM Mono', monospace !important;
+        color: #0D9488 !important;
+        font-size: 7.5pt !important;
+        font-weight: 700 !important;
+        letter-spacing: 0.12em !important;
+        margin-bottom: 2px !important;
+      }
+      .report-title {
+        font-size: 13pt !important;
+        font-weight: 800 !important;
+        letter-spacing: -0.02em !important;
+        color: #0F172A !important;
+        margin: 0 !important;
+      }
+      .report-subtitle {
+        font-size: 8pt !important;
+        color: #475569 !important;
+        margin: 2px 0 0 0 !important;
+      }
+      .report-subtitle b {
+        color: #0F172A !important;
+      }
+      .report-meta-timestamp {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: flex-end !important;
+        text-align: right !important;
+        font-family: 'DM Mono', monospace !important;
+        font-size: 7pt !important;
+        color: #64748B !important;
+      }
+      .report-meta-timestamp b {
+        color: #0F172A !important;
+        font-size: 7.5pt !important;
+        margin-top: 1px !important;
+      }
+
+      /* 6. Body: Unbounded overflow, compact flow */
+      .modal-body {
+        padding: 0 !important;
+        overflow: visible !important;
+        height: auto !important;
+        max-height: none !important;
+        flex: none !important;
+        display: block !important;
+      }
+
+      /* 7. Metrics Grid: Clean high-contrast cards */
+      .metrics-grid,
+      .report-metrics {
+        display: grid !important;
+        grid-template-columns: repeat(4, 1fr) !important;
+        gap: 8px !important;
+        margin-bottom: 10px !important;
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+      }
+      .metric-card {
+        background: #F8FAFC !important;
+        border: 1px solid #E2E8F0 !important;
+        border-radius: 6px !important;
+        padding: 8px 10px !important;
+        box-shadow: none !important;
+      }
+      .metric-label {
+        font-family: 'DM Mono', monospace !important;
+        font-size: 6.5pt !important;
+        font-weight: 700 !important;
+        color: #64748B !important;
+        letter-spacing: 0.06em !important;
+      }
+      .metric-val {
+        font-size: 14pt !important;
+        font-weight: 800 !important;
+        color: #0F172A !important;
+        margin-top: 2px !important;
+        letter-spacing: -0.02em !important;
+      }
+
+      /* 8. Audited Content Specimen */
+      .report-specimen-card {
+        background: #F8FAFC !important;
+        border: 1px solid #CBD5E1 !important;
+        border-radius: 6px !important;
+        padding: 8px 12px !important;
+        margin-bottom: 10px !important;
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+      }
+      .report-specimen-label {
+        font-family: 'DM Mono', monospace !important;
+        font-size: 6.5pt !important;
+        font-weight: 700 !important;
+        color: #64748B !important;
+        letter-spacing: 0.08em !important;
+        margin-bottom: 3px !important;
+      }
+      .report-specimen-text {
+        font-size: 8.5pt !important;
+        line-height: 1.4 !important;
+        color: #1E293B !important;
+        white-space: pre-wrap !important;
+        word-break: break-word !important;
+        overflow-wrap: break-word !important;
+      }
+
+      /* 9. Section Headings */
+      .report-findings-heading {
+        font-size: 9.5pt !important;
+        font-weight: 700 !important;
+        color: #0F172A !important;
+        margin: 10px 0 5px 0 !important;
+        padding-bottom: 2px !important;
+        border-bottom: 1px solid #E2E8F0 !important;
+        break-after: avoid !important;
+        page-break-after: avoid !important;
+      }
+
+      /* 10. Finding Cards */
+      .finding-card {
+        background: #FFFFFF !important;
+        border: 1px solid #CBD5E1 !important;
+        border-left: 4px solid #0D9488 !important;
+        border-radius: 6px !important;
+        padding: 8px 10px !important;
+        margin-bottom: 6px !important;
+        box-shadow: none !important;
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+      }
+      .finding-card.severity-critical {
+        border-left-color: #DC2626 !important;
+      }
+      .finding-card.severity-high {
+        border-left-color: #EA580C !important;
+      }
+      .finding-card.severity-medium {
+        border-left-color: #D97706 !important;
+      }
+      .finding-card.severity-low {
+        border-left-color: #0284C7 !important;
+      }
+
+      .finding-header {
+        display: flex !important;
+        align-items: center !important;
+        gap: 5px !important;
+        margin-bottom: 3px !important;
+      }
+      .finding-title {
+        color: #0F172A !important;
+        font-size: 9.5pt !important;
+        font-weight: 700 !important;
+        margin: 0 0 2px 0 !important;
+      }
+      .finding-desc {
+        color: #334155 !important;
+        font-size: 8pt !important;
+        line-height: 1.35 !important;
+        margin: 2px 0 4px 0 !important;
+        word-break: break-word !important;
+      }
+
+      /* Matched Quote Snippet */
+      .matched-quote {
+        background: #F1F5F9 !important;
+        border-left: 3px solid #64748B !important;
+        color: #0F172A !important;
+        font-family: 'DM Mono', monospace !important;
+        font-size: 7.5pt !important;
+        padding: 4px 7px !important;
+        margin: 3px 0 !important;
+        border-radius: 0 4px 4px 0 !important;
+        word-break: break-word !important;
+      }
+
+      /* Suggestion Box */
+      .suggestion-box {
+        background: #F0FDFA !important;
+        border: 1px solid #99F6E4 !important;
+        border-radius: 4px !important;
+        padding: 5px 7px !important;
+        margin-top: 4px !important;
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+      }
+      .suggestion-box small {
+        color: #0D9488 !important;
+        font-size: 6.5pt !important;
+        font-weight: 700 !important;
+        letter-spacing: 0.05em !important;
+        display: block !important;
+        margin-bottom: 1px !important;
+      }
+      .suggestion-box p {
+        color: #0F172A !important;
+        font-size: 8pt !important;
+        margin: 0 !important;
+        word-break: break-word !important;
+      }
+      .suggestion-box.ungrounded {
+        background: #FFFBEB !important;
+        border-color: #FDE68A !important;
+      }
+      .suggestion-box.ungrounded small {
+        color: #B45309 !important;
+      }
+
+      /* Reviewer Decision Note in Finding */
+      .finding-card > div[style*="font-size:10px"] {
+        color: #334155 !important;
+        border-top: 1px solid #E2E8F0 !important;
+        font-size: 7.5pt !important;
+        padding-top: 3px !important;
+        margin-top: 5px !important;
+      }
+
+      /* Badges & Status Pills */
+      .pill {
+        background: #F1F5F9 !important;
+        border: 1px solid #CBD5E1 !important;
+        color: #334155 !important;
+        font-size: 6.5pt !important;
+        padding: 1px 4px !important;
+        border-radius: 3px !important;
+        font-weight: 600 !important;
+      }
+      .pill.good {
+        background: #ECFDF5 !important;
+        border-color: #A7F3D0 !important;
+        color: #065F46 !important;
+      }
+      .pill.ready {
+        background: #EEF2FF !important;
+        border-color: #C7D2FE !important;
+        color: #4338CA !important;
+      }
+      .pill.danger {
+        background: #FEF2F2 !important;
+        border-color: #FECACA !important;
+        color: #991B1B !important;
+      }
+      .pill.warn {
+        background: #FFFBEB !important;
+        border-color: #FDE68A !important;
+        color: #92400E !important;
+      }
+
+      .badge-severity {
+        font-size: 6.5pt !important;
+        font-weight: 700 !important;
+        padding: 1px 4px !important;
+        border-radius: 3px !important;
+        border: 1px solid currentColor !important;
+        text-transform: uppercase !important;
+      }
+      .badge-severity.critical {
+        background: #FEF2F2 !important;
+        color: #DC2626 !important;
+        border-color: #FCA5A5 !important;
+      }
+      .badge-severity.high {
+        background: #FFF7ED !important;
+        color: #EA580C !important;
+        border-color: #FDBA74 !important;
+      }
+      .badge-severity.medium {
+        background: #FFFBEB !important;
+        color: #D97706 !important;
+        border-color: #FCD34D !important;
+      }
+      .badge-severity.low {
+        background: #F0F9FF !important;
+        color: #0284C7 !important;
+        border-color: #BAE6FD !important;
+      }
+
+      /* 11. Disclaimer & Attached Authenticity Block */
+      .report-disclaimer-card {
+        border-top: 1px solid #CBD5E1 !important;
+        padding-top: 6px !important;
+        margin-top: 8px !important;
+        break-before: avoid !important;
+        page-break-before: avoid !important;
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+      }
+      .report-disclaimer-text {
+        font-size: 7pt !important;
+        line-height: 1.4 !important;
+        color: #64748B !important;
+        margin: 0 !important;
+      }
+      .report-footer-meta {
+        font-family: 'DM Mono', monospace !important;
+        font-size: 6.5pt !important;
+        color: #94A3B8 !important;
+        margin-top: 4px !important;
+        display: block !important;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="shell">
+  <!-- Sidebar -->
+  <aside class="side">
+    <div class="logo">
+      <div class="logo-mark">
+        <!-- Geometric Shield Checkmark Icon -->
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          <path d="m9 12 2 2 4-4"/>
+        </svg>
+      </div>
+      <div class="logo-text">
+        <b>VERITY <span style="font-size:9px; padding:2px 5px; border-radius:4px; background:rgba(67,230,210,0.15); border:1px solid rgba(67,230,210,0.3); color:var(--teal)">v1.1</span></b>
+        <small>BRAND INTEGRITY OS</small>
+      </div>
+    </div>
+
+    <div class="label">WORKSPACE</div>
+    <button class="workspace-btn" onclick="go('Brand Knowledge')" title="Switch or configure brand workspace">
+      <span class="ws-mark" id="wsmark">V</span>
+      <div>
+        <b id="wsname">Set up your brand</b>
+        <small id="wsdesc">No brand selected</small>
+      </div>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+    </button>
+
+    <div class="label">PLATFORM</div>
+    <nav class="nav">
+      <button class="active" onclick="go('Overview')">
+        <svg viewBox="0 0 24 24"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+        Overview
+      </button>
+      <button onclick="go('Review Studio')">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        Review Studio
+        <span class="nav-tag">CORE</span>
+      </button>
+      <button onclick="go('Brand Knowledge')">
+        <svg viewBox="0 0 24 24"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10"/><path d="M6 10h10"/></svg>
+        Brand Knowledge
+      </button>
+      <button onclick="go('Review History')">
+        <svg viewBox="0 0 24 24"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="10"/></svg>
+        Review History
+      </button>
+      <button onclick="go('Insights')">
+        <svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+        Insights
+      </button>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-footer-badge">
+        <i></i> DETERMINISTIC ENGINE
+      </div>
+      <p>Human in control. Rules guide, reviewers decide.</p>
+    </div>
+  </aside>
+
+  <!-- Main Canvas -->
+  <main class="main">
+    <header>
+      <div class="crumb-bar">
+        <span>VERITY</span>
+        <span>›</span>
+        <b id="crumb">Overview</b>
+      </div>
+      <div class="header-actions">
+        <div id="engine-status" class="engine-status-pill">
+          <i></i> <span id="engine-status-text">ENGINE ONLINE</span>
+        </div>
+        <button class="btn btn-secondary" style="padding:6px 12px; font-size:11px" onclick="go('Review Studio')">
+          + Quick Review
+        </button>
+      </div>
+    </header>
+
+    <div class="content">
+      <div id="error-container"></div>
+      <div id="content"></div>
+    </div>
+  </main>
+</div>
+
+<!-- Modal Container for Compliance Report -->
+<div id="report-modal" class="modal-backdrop" hidden></div>
+
+<!-- Toast notification -->
+<div class="toast" id="toast" hidden></div>
+
+<script>
+// Configurable API base URL: window setting -> localStorage -> default port 8000
+const API = window.__VERITY_API_URL__ || localStorage.getItem('VERITY_API_URL') || 'http://127.0.0.1:8000';
+
+let page = 'Overview';
+let brands = [];
+let brand = '';
+let rules = [];
+let reviews = [];
+let selected = null;
+let isSubmitting = false;
+let historyFilter = 'all';
+let ruleKindFilter = 'all';
+
+const $ = id => document.getElementById(id);
+
+function esc(s) {
+  return String(s ?? '')
+    .replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+
+function toast(msg) {
+  const t = $('toast');
+  t.innerHTML = `
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#43E6D2" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+    <span>${esc(msg)}</span>
+  `;
+  t.hidden = false;
+  setTimeout(() => { t.hidden = true; }, 3200);
+}
+
+function showError(msg) {
+  const c = $('error-container');
+  if (c) {
+    c.innerHTML = `
+      <div class="error-banner">
+        <span><b>Backend API Notice:</b> ${esc(msg)}</span>
+        <button onclick="clearError()" title="Dismiss">✕</button>
+      </div>
+    `;
+  }
+}
+
+function clearError() {
+  const c = $('error-container');
+  if (c) c.innerHTML = '';
+}
+
+async function api(path, opts = {}) {
+  clearError();
+  const url = API + path;
+  try {
+    const res = await fetch(url, {
+      headers: { 'Content-Type': 'application/json' },
+      ...opts,
+    });
+    if (!res.ok) {
+      let j = {};
+      try { j = await res.json(); } catch {}
+      let msg = j.detail;
+      if (Array.isArray(msg)) {
+        msg = msg.map(m => m.msg || JSON.stringify(m)).join(', ');
+      }
+      throw Error(msg || `Request failed: ${res.status}`);
+    }
+    return res.json();
+  } catch (err) {
+    let message = err.message;
+    if (message.includes('Failed to fetch') || message.includes('NetworkError') || message.includes('fetch failed')) {
+      message = `Cannot connect to backend at ${API}. Ensure uvicorn is running: "python -m uvicorn app.main:app --reload --port 8000"`;
+      updateEngineStatus(false);
+    }
+    showError(message);
+    throw Error(message);
+  }
+}
+
+function updateEngineStatus(online) {
+  const el = $('engine-status');
+  const txt = $('engine-status-text');
+  if (!el || !txt) return;
+  if (online) {
+    el.className = 'engine-status-pill';
+    txt.textContent = 'ENGINE ONLINE';
+  } else {
+    el.className = 'engine-status-pill offline';
+    txt.textContent = 'BACKEND OFFLINE';
+  }
+}
+
+async function checkHealth() {
+  try {
+    const res = await fetch(API + '/health');
+    updateEngineStatus(res.ok);
+  } catch {
+    updateEngineStatus(false);
+  }
+}
+
+function go(p) {
+  page = p;
+  render();
+}
+
+function statusPill(s) {
+  const st = s || 'needs_review';
+  let cls = 'pill';
+  if (st === 'approved') cls += ' good';
+  else if (st === 'ready_for_approval') cls += ' ready';
+  else if (st === 'changes_required') cls += ' danger';
+  else if (st === 'needs_review') cls += ' warn';
+  return `<span class="${cls}">${esc(st.replaceAll('_', ' '))}</span>`;
+}
+
+function severityBadge(sev) {
+  const s = (sev || 'medium').toLowerCase();
+  return `<span class="badge-severity ${esc(s)}">${esc(s)}</span>`;
+}
+
+function findingStatusBadge(s) {
+  if (s === 'resolved') return '<span class="pill good">✓ Resolved</span>';
+  if (s === 'rejected' || s === 'dismissed') return '<span class="pill">✕ Dismissed</span>';
+  if (s === 'accepted') return '<span class="pill danger">⚠ Violation Accepted</span>';
+  return '<span class="pill warn">● Pending Review</span>';
+}
+
+function emptyState(title, desc, action = '', fn = '') {
+  return `
+    <div class="empty-state">
+      <div class="empty-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
+      </div>
+      <h3>${esc(title)}</h3>
+      <p>${esc(desc)}</p>
+      ${action ? `<button class="btn btn-secondary" onclick="${fn}">${esc(action)}</button>` : ''}
+    </div>
+  `;
+}
+
+async function refresh() {
+  try {
+    checkHealth();
+    brands = await api('/api/brands');
+    if (!brand && brands.length) {
+      brand = String(brands[0].id);
+    }
+    rules = brand ? await api(`/api/brands/${brand}/rules`) : [];
+    reviews = await api('/api/reviews');
+    
+    const activeBrandObj = brands.find(x => String(x.id) === brand);
+    if ($('wsname')) $('wsname').textContent = activeBrandObj?.name || 'Set up your brand';
+    if ($('wsdesc')) $('wsdesc').textContent = brand ? `${rules.length} configured rules` : 'No brand selected';
+    if ($('wsmark')) $('wsmark').textContent = (activeBrandObj?.name || 'V')[0].toUpperCase();
+    render();
+  } catch (e) {
+    showError(e.message);
+    render();
+  }
+}
+
+async function switchBrand(id) {
+  brand = id;
+  rules = brand ? await api(`/api/brands/${brand}/rules`) : [];
+  const b = brands.find(x => String(x.id) === brand);
+  if ($('wsname')) $('wsname').textContent = b?.name || 'Set up your brand';
+  if ($('wsdesc')) $('wsdesc').textContent = b ? `${rules.length} configured rules` : 'No brand selected';
+  if ($('wsmark')) $('wsmark').textContent = (b?.name || 'V')[0].toUpperCase();
+  render();
+}
+
+async function createBrand(e) {
+  e.preventDefault();
+  if (isSubmitting) return;
+  const nameInput = $('brandname');
+  const descInput = $('branddesc');
+  const btn = $('createbrandbtn');
+  
+  try {
+    isSubmitting = true;
+    if (btn) btn.disabled = true;
+    const b = await api('/api/brands', {
+      method: 'POST',
+      body: JSON.stringify({ name: nameInput.value, description: descInput.value }),
+    });
+    brands.push(b);
+    brand = String(b.id);
+    rules = [];
+    toast(`Workspace '${b.name}' created`);
+    switchBrand(brand);
+  } catch (err) {
+    // Handled in api()
+  } finally {
+    isSubmitting = false;
+    if (btn) btn.disabled = false;
+  }
+}
+
+async function addRule(e) {
+  e.preventDefault();
+  if (isSubmitting) return;
+  if (!brand) {
+    showError('Please select or create a brand workspace first.');
+    return;
+  }
+  const btn = $('addrulebtn');
+  try {
+    isSubmitting = true;
+    if (btn) btn.disabled = true;
+    const d = {
+      kind: $('kind').value,
+      title: $('ruletitle').value,
+      pattern: $('pattern').value,
+      severity: $('severity').value,
+      explanation: $('explanation').value,
+      suggestion: $('suggestion').value,
+      source_note: $('source').value,
+    };
+    const r = await api(`/api/brands/${brand}/rules`, {
+      method: 'POST',
+      body: JSON.stringify(d),
+    });
+    rules.push(r);
+    toast(`Rule '${r.title}' saved`);
+    render();
+  } catch (err) {
+    // Handled in api()
+  } finally {
+    isSubmitting = false;
+    if (btn) btn.disabled = false;
+  }
+}
+
+function updateCharCount(val) {
+  const count = (val || '').length;
+  const el = $('charcount');
+  if (el) el.textContent = `${count.toLocaleString()} / 20,000`;
+}
+
+async function runReview(e) {
+  e.preventDefault();
+  if (isSubmitting) return;
+  const btn = $('runreviewbtn');
+  const originalText = btn.innerHTML;
+  try {
+    isSubmitting = true;
+    btn.disabled = true;
+    btn.innerHTML = `
+      <svg class="spin" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10" stroke-dasharray="32" stroke-dashoffset="10"/></svg>
+      Analyzing Content…
+    `;
+    const r = await api('/api/reviews', {
+      method: 'POST',
+      body: JSON.stringify({
+        brand_id: Number($('reviewbrand').value),
+        title: $('reviewtitle').value || 'Untitled review',
+        content: $('reviewcontent').value,
+      }),
+    });
+    reviews.unshift(r);
+    selected = r;
+    toast(`Review #${r.id} complete: ${r.findings.length} findings generated`);
+    render();
+  } catch (err) {
+    // Handled in api()
+  } finally {
+    isSubmitting = false;
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = originalText;
+    }
+  }
+}
+
+async function openReview(id) {
+  try {
+    selected = await api(`/api/reviews/${id}`);
+    go('Review Studio');
+  } catch (err) {
+    // Handled in api()
+  }
+}
+
+async function decideFinding(findingId, decision) {
+  if (!selected) return;
+  let reason = '';
+  
+  if (decision === 'resolved') {
+    const finding = selected.findings.find(f => f.id === findingId);
+    if (!finding?.suggested_correction) {
+      reason = prompt('This rule has no pre-configured suggested correction. Enter a resolution note explaining how the violation was remediated:');
+      if (reason === null) return;
+      if (!reason.trim()) {
+        showError('A resolution reason is required when no automated correction is configured.');
+        return;
+      }
+    } else {
+      reason = `Applied suggested correction: "${finding.suggested_correction}"`;
+    }
+  } else if (decision === 'rejected') {
+    const inputReason = prompt('Optional: Reason for dismissing / rejecting this finding (e.g. false positive, acceptable context):');
+    if (inputReason === null) return;
+    reason = inputReason.trim() || 'Dismissed by reviewer';
+  } else if (decision === 'accepted') {
+    reason = 'Confirmed as active policy violation requiring changes.';
+  }
+
+  try {
+    selected = await api(`/api/reviews/${selected.id}/decisions`, {
+      method: 'POST',
+      body: JSON.stringify({ finding_id: findingId, decision, reason }),
+    });
+    reviews = reviews.map(r => (r.id === selected.id ? selected : r));
+    toast(`Decision saved: Finding marked as ${decision}`);
+    render();
+  } catch (err) {
+    // Handled in api()
+  }
+}
+
+async function approveReview(reviewId) {
+  try {
+    selected = await api(`/api/reviews/${reviewId}/approve`, { method: 'POST' });
+    reviews = reviews.map(r => (r.id === selected.id ? selected : r));
+    toast('Review sign-off complete: Status APPROVED');
+    render();
+  } catch (err) {
+    // Handled in api()
+  }
+}
+
+async function viewComplianceReport(reviewId) {
+  try {
+    const report = await api(`/api/reviews/${reviewId}/report`);
+    document.body.classList.add('report-open');
+    const modal = $('report-modal');
+    modal.innerHTML = `
+      <div class="modal-card">
+        <div class="modal-head report-header">
+          <div>
+            <div class="report-badge">COMPLIANCE PASSPORT</div>
+            <h2 class="report-title">${esc(report.report_type)}</h2>
+            <p class="report-subtitle">Review ID #${report.review.id} · Workspace: <b>${esc(report.brand.name)}</b></p>
+          </div>
+          <div class="report-meta-timestamp">
+            <span>AUDIT VERIFIED</span>
+            <b>${new Date(report.generated_at).toISOString().replace('T', ' ').substring(0, 19)} UTC</b>
+          </div>
+          <button class="btn btn-secondary no-print" onclick="closeReportModal()">✕ Close</button>
+        </div>
+        <div class="modal-body">
+          <div class="metrics-grid report-metrics" style="grid-template-columns:repeat(4,1fr); margin-bottom:20px">
+            <div class="metric-card" style="padding:14px">
+              <span class="metric-label">OVERALL STATUS</span>
+              <div style="margin-top:6px">${statusPill(report.review.overall_status)}</div>
+            </div>
+            <div class="metric-card" style="padding:14px">
+              <span class="metric-label">TOTAL FINDINGS</span>
+              <div class="metric-val" style="font-size:22px; margin-top:6px">${report.review.summary.total_findings}</div>
+            </div>
+            <div class="metric-card" style="padding:14px">
+              <span class="metric-label">UNRESOLVED FLAGS</span>
+              <div class="metric-val" style="font-size:22px; margin-top:6px; color:${report.review.summary.outstanding_unresolved_count ? 'var(--coral-red)' : 'var(--emerald-good)'}">
+                ${report.review.summary.outstanding_unresolved_count}
+              </div>
+            </div>
+            <div class="metric-card" style="padding:14px">
+              <span class="metric-label">DISPOSITIONED</span>
+              <div class="metric-val" style="font-size:22px; margin-top:6px; color:var(--teal)">
+                ${report.review.summary.resolved_findings + report.review.summary.rejected_findings}
+              </div>
+            </div>
+          </div>
+
+          <div class="report-specimen-card" style="border:1px solid var(--glass-border); border-radius:var(--radius-md); padding:16px; background:rgba(0,0,0,0.3); margin-bottom:20px">
+            <div class="report-specimen-label" style="font:9px 'DM Mono'; color:var(--text-dim); margin-bottom:6px">AUDITED CONTENT SPECIMEN</div>
+            <div class="report-specimen-text" style="font-size:12px; line-height:1.7; color:#E0E7FF; white-space:pre-wrap">${esc(report.review.submitted_content)}</div>
+          </div>
+
+          <h4 class="report-findings-heading" style="font-size:12px; font-weight:700; margin:16px 0 10px; color:#FFFFFF">Findings & Policy Evidence (${report.findings.length})</h4>
+          ${report.findings.length ? report.findings.map(f => `
+            <div class="finding-card severity-${esc((f.severity || 'medium').toLowerCase())}">
+              <div class="finding-header">
+                ${severityBadge(f.severity)}
+                <span class="pill">${esc(f.rule_type)}</span>
+                ${findingStatusBadge(f.finding_status)}
+                <span style="margin-left:auto; font:9px 'DM Mono'; color:var(--text-dim)">Evidence: <b>${esc(f.evidence_status)}</b></span>
+              </div>
+              <div class="finding-title">${esc(f.rule_name)}</div>
+              <p class="finding-desc">${esc(f.explanation)}</p>
+              ${f.matched_text ? `<div class="matched-quote">“${esc(f.matched_text)}”</div>` : ''}
+              
+              <div class="suggestion-box ${f.is_correction_grounded ? '' : 'ungrounded'}">
+                <small>${f.is_correction_grounded ? 'GROUNDED SUGGESTED CORRECTION' : 'HUMAN REVIEW REQUIRED'}</small>
+                <p>${esc(f.suggested_correction)}</p>
+              </div>
+
+              ${f.reviewer_decision ? `
+                <div style="font-size:10px; margin-top:10px; padding-top:8px; border-top:1px solid rgba(255,255,255,0.06); color:var(--text-muted)">
+                  <b>Reviewer Action:</b> ${esc(f.reviewer_decision)}
+                  ${f.reviewer_reason ? ` &nbsp;·&nbsp; <em>${esc(f.reviewer_reason)}</em>` : ''}
+                </div>
+              ` : ''}
+            </div>
+          `).join('') : '<p class="empty-state">No policy violations detected for this content.</p>'}
+
+          <div class="report-disclaimer-card">
+            <p class="report-disclaimer-text" style="font-size:10px; color:var(--text-dim); line-height:1.6; margin-top:20px; border-top:1px solid var(--glass-border); padding-top:12px">
+              ◈ ${esc(report.disclaimer)}
+            </p>
+            <div class="report-footer-meta" style="font:9px 'DM Mono'; color:var(--text-dim); margin-top:8px">
+              DOCUMENT INTEGRITY ID: VERITY-${report.review.id}-${new Date(report.generated_at).getTime()} · TIMESTAMP: ${new Date(report.generated_at).toISOString()}
+            </div>
+          </div>
+        </div>
+        <div class="modal-foot no-print">
+          <div style="font:9px 'DM Mono'; color:var(--text-dim)">
+            TIMESTAMP: ${new Date(report.generated_at).toISOString()}
+          </div>
+          <div style="display:flex; gap:10px">
+            <button class="btn btn-secondary" onclick="downloadReportJson(${reviewId})">
+              <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+              Download JSON
+            </button>
+            <button class="btn btn-secondary" onclick="window.print()">
+              <svg viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg>
+              Print / Save PDF
+            </button>
+            <button class="btn btn-primary" onclick="closeReportModal()">Done</button>
+          </div>
+        </div>
+      </div>
+    `;
+    modal.hidden = false;
+  } catch (err) {
+    // Handled in api()
+  }
+}
+
+function closeReportModal() {
+  document.body.classList.remove('report-open');
+  $('report-modal').hidden = true;
+}
+
+window.addEventListener('beforeprint', () => {
+  const modal = $('report-modal');
+  if (modal && !modal.hidden) {
+    document.body.classList.add('report-open');
+  }
+});
+
+window.addEventListener('afterprint', () => {
+  const modal = $('report-modal');
+  if (!modal || modal.hidden) {
+    document.body.classList.remove('report-open');
+  }
+});
+
+async function downloadReportJson(reviewId) {
+  try {
+    const report = await api(`/api/reviews/${reviewId}/report`);
+    const blob = new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' });
+    const u = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = u;
+    a.download = `verity-compliance-report-review-${reviewId}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(u);
+    toast('Compliance JSON exported');
+  } catch (err) {
+    // Handled in api()
+  }
+}
+
+function setHistoryFilter(flt) {
+  historyFilter = flt;
+  renderHistoryRows();
+}
+
+function renderHistoryRows() {
+  const q = ($('search')?.value || '').toLowerCase();
+  let arr = reviews.filter(r => r.title.toLowerCase().includes(q) || String(r.id).includes(q));
+  if (historyFilter !== 'all') {
+    arr = arr.filter(r => r.status === historyFilter);
+  }
+  const el = $('historyrows');
+  if (!el) return;
+  if (!arr.length) {
+    el.innerHTML = emptyState('No matching reviews', 'Try modifying your search or filter criteria.');
+    return;
+  }
+  el.innerHTML = arr.map(r => `
+    <button class="list-row" onclick="openReview(${r.id})">
+      <div class="list-row-icon">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      </div>
+      <div class="list-row-content">
+        <b>${esc(r.title)}</b>
+        <small>Review #${r.id} · ${new Date(r.created_at).toLocaleString()} · ${r.findings.length} findings</small>
+      </div>
+      ${statusPill(r.status)}
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+    </button>
+  `).join('');
+}
+
+function render() {
+  $('crumb').textContent = page;
+  document.querySelectorAll('.nav button').forEach(b => {
+    b.classList.toggle('active', b.textContent.includes(page));
+  });
+
+  const activeBrandObj = brands.find(b => String(b.id) === brand);
+  const totalFindings = reviews.reduce((n, r) => n + r.findings.length, 0);
+  const pendingFindings = reviews.reduce((n, r) => n + r.findings.filter(f => f.decision_status === 'pending').length, 0);
+  const resolvedFindings = reviews.reduce((n, r) => n + r.findings.filter(f => f.decision_status === 'resolved').length, 0);
+  const highRiskFindings = reviews.reduce((n, r) => n + r.findings.filter(f => f.decision_status === 'pending' && ['high', 'critical'].includes(f.severity)).length, 0);
+  const approvedCount = reviews.filter(r => r.status === 'approved').length;
+  const readyCount = reviews.filter(r => r.status === 'ready_for_approval').length;
+
+  let c = '';
+
+  if (page === 'Overview') {
+    c = `
+      <section class="hero-card">
+        <div class="hero-mesh"></div>
+        <div class="hero-badge">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          EVIDENCE-AWARE ENTERPRISE GOVERNANCE
+        </div>
+        <h1 class="hero-title">Trust Every Word.<br><span>Prove Every Claim.</span></h1>
+        <p class="hero-desc">
+          Automate brand compliance with deterministic policy rules. Inspect explainable findings with exact text matching, policy citations, and keep final sign-off human-controlled.
+        </p>
+        <div class="hero-actions">
+          <button class="btn btn-primary" onclick="go('Review Studio')">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            Start a Content Review →
+          </button>
+          <button class="btn btn-secondary" onclick="go('Brand Knowledge')">
+            <svg viewBox="0 0 24 24"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/></svg>
+            Manage Brand Rules
+          </button>
+        </div>
+      </section>
+
+      ${!brands.length ? `
+        <div class="onboarding-banner">
+          <div style="font:9px 'DM Mono'; color:var(--teal); letter-spacing:0.1em">QUICK START GUIDE</div>
+          <h3 style="font-size:15px; margin:4px 0 6px; color:#FFFFFF">Welcome to VERITY Brand Integrity OS</h3>
+          <p style="font-size:11px; color:var(--text-muted); margin:0">Follow these 3 simple steps to execute your first brand governance audit:</p>
+          <div class="steps-trio">
+            <div class="step-unit">
+              <span style="font:9px 'DM Mono'; color:var(--teal)">STEP 1</span>
+              <b>Create Workspace</b>
+              <p>Register your company or brand name to establish your governance scope.</p>
+              <button class="btn btn-primary" style="margin-top:6px; padding:6px 10px; font-size:10px" onclick="go('Brand Knowledge')">Create Workspace →</button>
+            </div>
+            <div class="step-unit">
+              <span style="font:9px 'DM Mono'; color:var(--violet)">STEP 2</span>
+              <b>Configure Rules</b>
+              <p>Define prohibited phrases, required terminology, or approved factual values.</p>
+            </div>
+            <div class="step-unit">
+              <span style="font:9px 'DM Mono'; color:var(--emerald-good)">STEP 3</span>
+              <b>Audit in Studio</b>
+              <p>Paste marketing copy or announcements to detect policy violations deterministically.</p>
+            </div>
+          </div>
+        </div>
+      ` : ''}
+
+      <div class="panel-head" style="margin-bottom:12px">
+        <div>
+          <h3>Governance Signals</h3>
+          <p>Live metrics calculated exclusively from persisted database records.</p>
+        </div>
+      </div>
+
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-top">
+            <span class="metric-label">Total Audits</span>
+            <div class="metric-icon">
+              <svg viewBox="0 0 24 24"><rect width="8" height="4" x="8" y="2" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/></svg>
+            </div>
+          </div>
+          <div class="metric-val">${reviews.length}</div>
+          <div class="metric-sub">Persisted review records</div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-top">
+            <span class="metric-label">Pending Decisions</span>
+            <div class="metric-icon amber">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>
+            </div>
+          </div>
+          <div class="metric-val">${pendingFindings}</div>
+          <div class="metric-sub">Awaiting reviewer action</div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-top">
+            <span class="metric-label">Resolved Violations</span>
+            <div class="metric-icon emerald">
+              <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            </div>
+          </div>
+          <div class="metric-val">${resolvedFindings}</div>
+          <div class="metric-sub">Remediated with evidence</div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-top">
+            <span class="metric-label">High-Risk Flags</span>
+            <div class="metric-icon coral">
+              <svg viewBox="0 0 24 24"><polygon points="12 2 2 22 22 22"/><line x1="12" x2="12" y1="9" y2="13"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg>
+            </div>
+          </div>
+          <div class="metric-val" style="color:${highRiskFindings ? 'var(--coral-red)' : 'var(--text-main)'}">${highRiskFindings}</div>
+          <div class="metric-sub">Pending High / Critical</div>
+        </div>
+      </div>
+
+      <div class="cols-split">
+        <section class="glass-card">
+          <div class="panel-head">
+            <div>
+              <h3>Recent Audited Content</h3>
+              <p>Latest reviews evaluated against brand policy.</p>
+            </div>
+            <button class="btn btn-secondary" style="padding:4px 10px; font-size:10px" onclick="go('Review History')">View all →</button>
+          </div>
+          ${reviews.length ? reviews.slice(0, 5).map(r => `
+            <button class="list-row" onclick="openReview(${r.id})">
+              <div class="list-row-icon">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              </div>
+              <div class="list-row-content">
+                <b>${esc(r.title)}</b>
+                <small>${new Date(r.created_at).toLocaleString()} · ${r.findings.length} findings</small>
+              </div>
+              ${statusPill(r.status)}
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+            </button>
+          `).join('') : emptyState('No reviews recorded', 'Create a brand and configure approved rules to begin auditing content.', 'Set up Brand Rules', "go('Brand Knowledge')")}
+        </section>
+
+        <section class="glass-card">
+          <div class="panel-head">
+            <div>
+              <h3>Integrity Index</h3>
+              <p>Compliance readiness score across this workspace.</p>
+            </div>
+          </div>
+          <div style="font-size:36px; font-weight:800; letter-spacing:-0.03em; margin:14px 0 6px">
+            ${reviews.length ? Math.round(((approvedCount + readyCount) / reviews.length) * 100) + '%' : '—'}
+          </div>
+          <div style="font-size:11px; color:var(--text-muted); margin-bottom:14px">
+            ${reviews.length ? 'Proportion of reviews approved or ready for sign-off' : 'Awaiting initial review record'}
+          </div>
+          <div style="height:6px; background:rgba(255,255,255,0.06); border-radius:20px; overflow:hidden; margin-bottom:20px">
+            <div style="height:100%; width:${reviews.length ? ((approvedCount + readyCount) / reviews.length) * 100 : 0}%; background:linear-gradient(90deg, var(--teal), var(--violet)); border-radius:20px"></div>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; padding:9px 0; border-top:1px solid rgba(255,255,255,0.04); font-size:11px">
+            <span style="color:var(--text-muted)">Approved Reviews</span>
+            <b>${approvedCount}</b>
+          </div>
+          <div style="display:flex; justify-content:space-between; padding:9px 0; border-top:1px solid rgba(255,255,255,0.04); font-size:11px">
+            <span style="color:var(--text-muted)">Ready for Sign-off</span>
+            <b>${readyCount}</b>
+          </div>
+          <div style="display:flex; justify-content:space-between; padding:9px 0; border-top:1px solid rgba(255,255,255,0.04); font-size:11px">
+            <span style="color:var(--text-muted)">Selected Workspace Rules</span>
+            <b>${rules.length}</b>
+          </div>
+        </section>
+      </div>
+    `;
+  } else if (page === 'Review Studio') {
+    c = `
+      <div style="margin-bottom:22px">
+        <h1 style="font-size:24px; font-weight:800; letter-spacing:-0.03em; margin:0 0 6px">Review Studio</h1>
+        <p style="font-size:12px; color:var(--text-muted); margin:0">Submit promotional copy or releases. Inspect explainable policy matches. Record reviewer sign-off.</p>
+      </div>
+
+      <div class="cols-half">
+        <!-- Input Form -->
+        <form class="glass-card" onsubmit="runReview(event)">
+          <div class="panel-head">
+            <div>
+              <h3>Content to Audit</h3>
+              <p>Evaluated against configured brand knowledge rules.</p>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Review Title</label>
+            <input id="reviewtitle" placeholder="e.g. Q3 Launch Campaign Announcement">
+          </div>
+
+          <div class="form-group">
+            <label>
+              Target Brand Workspace
+              ${brand ? `<span style="color:var(--teal)">${rules.length} rules active</span>` : ''}
+            </label>
+            <select id="reviewbrand" required onchange="switchBrand(this.value)">
+              ${brands.map(b => `<option value="${b.id}" ${String(b.id) === brand ? 'selected' : ''}>${esc(b.name)}</option>`).join('')}
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>
+              <span>Copy / Content Text</span>
+              <span id="charcount" class="char-counter">0 / 20,000</span>
+            </label>
+            <textarea id="reviewcontent" required minlength="3" maxlength="20000" oninput="updateCharCount(this.value)" placeholder="Paste marketing copy, press releases, landing page copy, or email newsletters to verify against your rules…"></textarea>
+          </div>
+
+          <button class="btn btn-primary" id="runreviewbtn" style="width:100%; padding:12px; margin-top:8px">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            Analyze Content →
+          </button>
+          
+          <div style="font-size:10px; color:var(--text-dim); line-height:1.6; margin-top:16px; padding:10px; background:rgba(255,255,255,0.015); border-radius:var(--radius-sm); border:1px solid rgba(255,255,255,0.03)">
+            ◈ Deterministic Engine: Findings are triggered exclusively by your configured brand rules. External factual truth is not invented.
+          </div>
+        </form>
+
+        <!-- Findings & Results Lens -->
+        <section class="glass-card">
+          ${selected ? `
+            <div class="panel-head">
+              <div>
+                <div style="display:flex; align-items:center; gap:8px">
+                  <h3>${esc(selected.title)}</h3>
+                  ${statusPill(selected.status)}
+                </div>
+                <p>Review #${selected.id} · Created ${new Date(selected.created_at).toLocaleString()}</p>
+              </div>
+            </div>
+
+            <div style="display:flex; gap:8px; margin-bottom:18px; flex-wrap:wrap">
+              <button class="btn btn-secondary" onclick="viewComplianceReport(${selected.id})">
+                <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                View Compliance Report
+              </button>
+              <button class="btn btn-secondary" onclick="downloadReportJson(${selected.id})">
+                <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+                Export JSON
+              </button>
+              ${selected.status === 'ready_for_approval' ? `
+                <button class="btn btn-success" onclick="approveReview(${selected.id})">
+                  <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                  Approve Review
+                </button>
+              ` : selected.status === 'approved' ? `
+                <span class="pill good">✓ Review Approved</span>
+              ` : `
+                <span style="font-size:10px; color:var(--text-dim); align-self:center">
+                  ${selected.status === 'changes_required' ? '⚠️ Address unresolved violations before approval' : 'ℹ️ Disposition all findings to enable approval'}
+                </span>
+              `}
+            </div>
+
+            <div style="display:flex; justify-content:space-between; align-items:center; font-size:11px; margin-bottom:12px; color:var(--text-muted)">
+              <span>FINDINGS BREAKDOWN (${selected.findings.length})</span>
+              <span>Open Flags: <b style="color:${selected.findings.filter(f=>['pending','accepted'].includes(f.decision_status)).length ? 'var(--coral-red)' : 'var(--emerald-good)'}">${selected.findings.filter(f=>['pending','accepted'].includes(f.decision_status)).length}</b></span>
+            </div>
+
+            ${selected.findings.length ? selected.findings.map(f => `
+              <article class="finding-card severity-${esc((f.severity || 'medium').toLowerCase())}">
+                <div class="finding-header">
+                  ${severityBadge(f.severity)}
+                  <span class="pill">${esc(f.category)}</span>
+                  ${findingStatusBadge(f.decision_status)}
+                </div>
+                <div class="finding-title">${esc(f.title)}</div>
+                <p class="finding-desc">${esc(f.description)}</p>
+                ${f.matched_text ? `<div class="matched-quote">“${esc(f.matched_text)}”</div>` : ''}
+                
+                <div class="evidence-meta">
+                  <span>Policy Source: <b>${esc(f.evidence_reference)}</b></span>
+                  <span>·</span>
+                  <span>Evidence Status: <span class="pill">${esc(f.evidence_status.replaceAll('_', ' '))}</span></span>
+                </div>
+
+                <div class="suggestion-box ${f.suggested_correction ? '' : 'ungrounded'}">
+                  <small>${f.suggested_correction ? 'CONFIGURED GROUNDED CORRECTION' : 'HUMAN REVIEW REQUIRED'}</small>
+                  <p>${esc(f.suggested_correction || 'No automated correction configured in brand rules. A human reviewer must verify appropriate phrasing.')}</p>
+                </div>
+
+                ${selected.status !== 'approved' ? `
+                  <div class="decision-actions">
+                    ${f.decision_status === 'pending' ? `
+                      <button class="btn btn-success" style="padding:6px 12px; font-size:11px" onclick="decideFinding(${f.id}, 'resolved')">
+                        ✓ Resolve
+                      </button>
+                      <button class="btn btn-danger" style="padding:6px 12px; font-size:11px" onclick="decideFinding(${f.id}, 'accepted')">
+                        ⚠ Accept Violation
+                      </button>
+                      <button class="btn btn-secondary" style="padding:6px 12px; font-size:11px" onclick="decideFinding(${f.id}, 'rejected')">
+                        ✕ Dismiss (False Positive)
+                      </button>
+                    ` : f.decision_status === 'accepted' ? `
+                      <button class="btn btn-success" style="padding:6px 12px; font-size:11px" onclick="decideFinding(${f.id}, 'resolved')">
+                        ✓ Resolve Violation
+                      </button>
+                      <button class="btn btn-secondary" style="padding:6px 12px; font-size:11px" onclick="decideFinding(${f.id}, 'rejected')">
+                        ✕ Dismiss
+                      </button>
+                    ` : `
+                      <button class="btn btn-secondary" style="padding:6px 12px; font-size:11px" onclick="decideFinding(${f.id}, 'pending')">
+                        ↺ Reopen Finding
+                      </button>
+                    `}
+                  </div>
+                ` : ''}
+
+                ${f.decision_reason ? `
+                  <div style="font-size:10px; color:var(--text-dim); margin-top:8px">
+                    <b>Decision Note:</b> ${esc(f.decision_reason)}
+                  </div>
+                ` : ''}
+              </article>
+            `).join('') : emptyState('All configured rules passed', 'No policy violations or prohibited terminology were detected in this submission.')}
+          ` : emptyState('Ready to inspect content', 'Submit copy on the left to analyze it against your brand rules, or reopen a past review from Review History.', 'Go to History', "go('Review History')")}
+        </section>
+      </div>
+    `;
+  } else if (page === 'Brand Knowledge') {
+    c = `
+      <div style="margin-bottom:22px">
+        <h1 style="font-size:24px; font-weight:800; letter-spacing:-0.03em; margin:0 0 6px">Brand Knowledge</h1>
+        <p style="font-size:12px; color:var(--text-muted); margin:0">Configure approved brand terminology, prohibited claims, and factual check assertions.</p>
+      </div>
+
+      <div class="cols-half">
+        <!-- Create Workspace -->
+        <section class="glass-card">
+          <div class="panel-head">
+            <div>
+              <h3>Create Brand Workspace</h3>
+              <p>Register a company or product brand domain.</p>
+            </div>
+          </div>
+          <form onsubmit="createBrand(event)">
+            <div class="form-group">
+              <label>Brand Workspace Name</label>
+              <input id="brandname" required minlength="2" maxlength="180" placeholder="e.g. Verity Cloud, Aura BioHealth">
+            </div>
+            <div class="form-group">
+              <label>Description / Domain Scope</label>
+              <textarea id="branddesc" placeholder="Brand positioning, regulated scope, tone requirements…"></textarea>
+            </div>
+            <button class="btn btn-primary" id="createbrandbtn" style="width:100%">＋ Create Workspace</button>
+          </form>
+        </section>
+
+        <!-- Active Workspace Info -->
+        <section class="glass-card">
+          <div class="panel-head">
+            <div>
+              <h3>Active Brand Selection</h3>
+              <p>Manage rules for the currently active workspace.</p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Selected Workspace</label>
+            <select id="brandselect" onchange="switchBrand(this.value)">
+              <option value="">Select a brand workspace</option>
+              ${brands.map(b => `<option value="${b.id}" ${String(b.id) === brand ? 'selected' : ''}>${esc(b.name)}</option>`).join('')}
+            </select>
+          </div>
+          ${brand && activeBrandObj ? `
+            <div style="padding:16px; border:1px solid var(--glass-border); border-radius:var(--radius-md); background:rgba(255,255,255,0.02); margin-top:10px">
+              <div style="display:flex; justify-content:space-between; align-items:center">
+                <b style="font-size:13px; color:#FFFFFF">${esc(activeBrandObj.name)}</b>
+                <span class="pill ready">${rules.length} Configured Rules</span>
+              </div>
+              <p style="font-size:11px; color:var(--text-muted); margin:8px 0 0 0; line-height:1.5">${esc(activeBrandObj.description || 'No description provided.')}</p>
+            </div>
+          ` : emptyState('No brand active', 'Create a brand workspace above to start configuring policy rules.')}
+        </section>
+      </div>
+
+      ${brand ? `
+        <section class="glass-card" style="margin-top:20px">
+          <div class="panel-head">
+            <div>
+              <h3>Add Approved Governance Rule</h3>
+              <p>Rules are evaluated deterministically on content submission.</p>
+            </div>
+          </div>
+
+          <form style="display:grid; grid-template-columns:1fr 1fr; gap:14px" onsubmit="addRule(event)">
+            <div class="form-group">
+              <label>Rule Type</label>
+              <select id="kind">
+                <option value="prohibited_phrase">Prohibited phrase</option>
+                <option value="required_term">Required terminology</option>
+                <option value="fact_check">Approved fact / value check</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Severity Level</label>
+              <select id="severity">
+                <option value="low">Low</option>
+                <option value="medium" selected>Medium</option>
+                <option value="high">High</option>
+                <option value="critical">Critical</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Rule Title</label>
+              <input id="ruletitle" required minlength="2" maxlength="220" placeholder="e.g. No Absolute Free Guarantees">
+            </div>
+
+            <div class="form-group">
+              <label>Exact Phrase or Value Pattern</label>
+              <input id="pattern" required minlength="1" maxlength="1000" placeholder="e.g. free, 100% guaranteed, FDA-approved">
+            </div>
+
+            <div class="form-group" style="grid-column:1/-1">
+              <label>Trigger Explanation</label>
+              <textarea id="explanation" required minlength="3" maxlength="4000" style="min-height:90px" placeholder="Explain why this rule exists and why the phrase or omission violates brand standards…"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label>Suggested Correction (Optional)</label>
+              <input id="suggestion" placeholder="Approved substitute wording (grounded correction)">
+            </div>
+
+            <div class="form-group">
+              <label>Policy Source Reference</label>
+              <input id="source" placeholder="e.g. Legal Compliance Manual §4.2">
+            </div>
+
+            <div style="grid-column:1/-1">
+              <button class="btn btn-primary" id="addrulebtn" style="width:100%">＋ Save Approved Rule</button>
+            </div>
+          </form>
+
+          <div style="margin-top:28px">
+            <div class="panel-head">
+              <div>
+                <h3>Configured Rules Catalog (${rules.length})</h3>
+                <p>Rules enforced when auditing copy for ${esc(activeBrandObj?.name || 'Selected Workspace')}.</p>
+              </div>
+            </div>
+
+            <div style="display:grid; gap:10px">
+              ${rules.length ? rules.map(r => `
+                <div class="list-row" style="cursor:default">
+                  <div class="list-row-icon">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                  </div>
+                  <div class="list-row-content">
+                    <div style="display:flex; align-items:center; gap:8px">
+                      <b>${esc(r.title)}</b>
+                      ${severityBadge(r.severity)}
+                      <span class="pill">${esc(r.kind)}</span>
+                    </div>
+                    <p style="font-size:11px; color:var(--text-muted); margin:4px 0 0 0">${esc(r.explanation)}</p>
+                    <div style="display:flex; gap:12px; font-size:10px; color:var(--text-dim); margin-top:4px">
+                      <span>Pattern: <code>${esc(r.pattern)}</code></span>
+                      ${r.suggestion ? `<span>Correction: <em>${esc(r.suggestion)}</em></span>` : ''}
+                      <span>Source: ${esc(r.source_note || 'Configured rule')}</span>
+                    </div>
+                  </div>
+                </div>
+              `).join('') : emptyState('No rules configured yet', 'Add your first approved rule to begin enforcing brand standards.')}
+            </div>
+          </div>
+        </section>
+      ` : ''}
+    `;
+  } else if (page === 'Review History') {
+    c = `
+      <div style="margin-bottom:22px">
+        <h1 style="font-size:24px; font-weight:800; letter-spacing:-0.03em; margin:0 0 6px">Review History</h1>
+        <p style="font-size:12px; color:var(--text-muted); margin:0">Audit log of all content checks, human decisions, and generated compliance records.</p>
+      </div>
+
+      <div class="glass-card">
+        <div style="display:flex; gap:12px; margin-bottom:16px; flex-wrap:wrap">
+          <div style="flex:1; min-width:240px; position:relative">
+            <input id="search" placeholder="Search by review title or ID…" oninput="renderHistoryRows()" style="width:100%; background:rgba(8,11,20,0.7); border:1px solid var(--glass-border); border-radius:var(--radius-sm); padding:10px 14px; font-size:12px">
+          </div>
+        </div>
+
+        <div class="filter-bar">
+          <button class="filter-btn ${historyFilter==='all'?'active':''}" onclick="setHistoryFilter('all')">All Reviews (${reviews.length})</button>
+          <button class="filter-btn ${historyFilter==='changes_required'?'active':''}" onclick="setHistoryFilter('changes_required')">Changes Required</button>
+          <button class="filter-btn ${historyFilter==='needs_review'?'active':''}" onclick="setHistoryFilter('needs_review')">Needs Review</button>
+          <button class="filter-btn ${historyFilter==='ready_for_approval'?'active':''}" onclick="setHistoryFilter('ready_for_approval')">Ready for Sign-off</button>
+          <button class="filter-btn ${historyFilter==='approved'?'active':''}" onclick="setHistoryFilter('approved')">Approved</button>
+        </div>
+
+        <div id="historyrows"></div>
+      </div>
+    `;
+  } else {
+    // Insights
+    c = `
+      <div style="margin-bottom:22px">
+        <h1 style="font-size:24px; font-weight:800; letter-spacing:-0.03em; margin:0 0 6px">Governance Insights</h1>
+        <p style="font-size:12px; color:var(--text-muted); margin:0">Intelligence generated strictly from stored review and decision records.</p>
+      </div>
+
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-top"><span class="metric-label">Total Audits</span></div>
+          <div class="metric-val">${reviews.length}</div>
+          <div class="metric-sub">Stored reviews</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-top"><span class="metric-label">Active Flags</span></div>
+          <div class="metric-val" style="color:var(--amber-warn)">${pendingFindings}</div>
+          <div class="metric-sub">Pending decisions</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-top"><span class="metric-label">Resolved Violations</span></div>
+          <div class="metric-val" style="color:var(--emerald-good)">${resolvedFindings}</div>
+          <div class="metric-sub">Verified compliant</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-top"><span class="metric-label">Active Rules</span></div>
+          <div class="metric-val" style="color:var(--teal)">${rules.length}</div>
+          <div class="metric-sub">In selected brand</div>
+        </div>
+      </div>
+
+      <section class="glass-card" style="margin-top:20px">
+        <div class="panel-head">
+          <div>
+            <h3>Frequently Triggered Rules</h3>
+            <p>Calculated directly from stored finding occurrences.</p>
+          </div>
+        </div>
+
+        ${(() => {
+          const counts = {};
+          reviews.forEach(r => r.findings.forEach(f => {
+            counts[f.rule_title] = (counts[f.rule_title] || 0) + 1;
+          }));
+          const entries = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+          const maxCount = entries.length ? entries[0][1] : 1;
+          return entries.length ? entries.map(([name, count]) => `
+            <div style="margin-bottom:14px">
+              <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:5px">
+                <b>${esc(name)}</b>
+                <span style="font:10px 'DM Mono'; color:var(--teal)">${count} triggers</span>
+              </div>
+              <div style="height:6px; background:rgba(255,255,255,0.05); border-radius:10px; overflow:hidden">
+                <div style="height:100%; width:${Math.round((count/maxCount)*100)}%; background:linear-gradient(90deg, var(--teal), var(--violet)); border-radius:10px"></div>
+              </div>
+            </div>
+          `).join('') : emptyState('No insights available yet', 'Run reviews to start compiling governance rule insights.')
+        })()}
+      </section>
+    `;
+  }
+
+  $('content').innerHTML = c;
+  if (page === 'Review History') {
+    renderHistoryRows();
+  }
+}
+
+// Initial synchronous render so page is NEVER blank
+render();
+// Fetch live data
+refresh().then(() => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const autoReportId = urlParams.get('report') || urlParams.get('printReport');
+  if (autoReportId) {
+    viewComplianceReport(autoReportId);
+  }
+});
+</script>
+</body>
+</html>
